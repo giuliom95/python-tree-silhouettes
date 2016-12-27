@@ -57,11 +57,19 @@ def fill_polygon(polygon, film):
     for p in points: 
         if inside_polygon(p, polygon):
             x, y, _ = p
-            if 0 < x < 800 and 0 < y < 800:
+            try:
                 film[x][y] = 1
+            except IndexError:
+                print 'WARNING: Out of film'
 
 
-def render(polygons):
+def render(polygons, filename):
+    """
+    Renders the scene and saves it to filename
+    
+    :param polygons: List of convex polygons.
+    :param filename: Output file name
+    """
     film_w, film_h = FILM_DIMENSIONS
     film = np.array([[0]*film_w]*film_h)
     l = len(polygons)
@@ -71,12 +79,11 @@ def render(polygons):
     
     for poly in polygons:
         fill_polygon(poly, film)
-        
         i += 1
-        print i, l
+        print i, '/', l
     
-    with open('out.ppm', 'w') as f:
-        f.write('P5\n800 800\n255\n')
+    with open(filename, 'w') as f:
+        f.write('P5\n{0} {1}\n255\n'.format(*FILM_DIMENSIONS))
         for row in film:
             for elem in row:
                 f.write(chr(elem*255))
@@ -100,22 +107,14 @@ def between_points(ray, points):
 
 
 if __name__=='__main__':
-    poly = np.array([
-        [400, 400,   1],
-        [480, 400,   1],
-        [480, 440,   1],
-        [400, 480,   1]])
 
-    point = [440, 440, 1]
-    
-    
     branches = examples.side_tree()
     
     polys = []
     for branch in branches:
         polys += branch
         
-    render(polys)
+    render(polys, "out.pgm")
     
     
     
