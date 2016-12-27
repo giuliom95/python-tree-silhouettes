@@ -11,9 +11,9 @@ def bounding_box(polygon):
     :return: The lower left point, the width and the height.
     """
     vtx = polygon.T
-    lower_left = np.array([np.min(vtx[0]), np.min(vtx[1]), 1])
-    upper_right = np.array([np.max(vtx[0]), np.max(vtx[1]), 1])
-    width, height, _ = upper_right - lower_left
+    lower_left = np.array([np.min(vtx[0]), np.min(vtx[1])])
+    upper_right = np.array([np.max(vtx[0]), np.max(vtx[1])])
+    width, height = upper_right - lower_left
     return lower_left, width, height
     
     
@@ -49,7 +49,7 @@ def fill_polygon(polygon, film):
     :param film: The matrix of pixels
     """
     polygon = np.array(polygon)
-    (llx, lly, _), width, height = bounding_box(polygon)
+    (llx, lly), width, height = bounding_box(polygon)
     points = np.array([(x, y, 1)
         for y in range(lly, lly+height+1)
         for x in range(llx, llx+width+1)])
@@ -57,7 +57,8 @@ def fill_polygon(polygon, film):
     for p in points: 
         if inside_polygon(p, polygon):
             x, y, _ = p
-            film[x][y] = 1
+            if 0 < x < 800 and 0 < y < 800:
+                film[x][y] = 1
 
 
 def render(polygons):
@@ -65,13 +66,11 @@ def render(polygons):
     film = np.array([[0]*film_w]*film_h)
     l = len(polygons)
     i = 0
+    polygons = np.array(polygons)
+    polygons = (polygons*film_w/2 + film_w/2).astype(int)
     
-    for polygon in polygons:
-        scaled_poly = polygon*film_w/2 + film_w/2
-        scaled_poly.T[2] = [1, 1, 1, 1]
-        scaled_poly = scaled_poly.astype(int)
-        
-        fill_polygon(scaled_poly, film)
+    for poly in polygons:
+        fill_polygon(poly, film)
         
         i += 1
         print i, l
@@ -83,41 +82,41 @@ def render(polygons):
                 f.write(chr(elem*255))
 
 
-def between_points(ray_points, points):
+def between_points(ray, points):
     """
     Check if the ray defined by two points of it
     passes through the two given points.
     Points must be in homogeneous coordinates.
     
-    :param ray_points: Two points that defines the ray.
+    :param ray: Two points that defines the ray.
     :param points: Two points.
     :return: Boolean
     """
-    mat = np.array([points[0], ray_points[0], ray_points[1]])
-    v1 = np.linalg.det(mat)
-    
-    mat[0] = points[1]
-    v2 = np.linalg.det(mat)
-    #print mat, v2
+    v1 = (points[0][0]-ray[0][0])*(ray[0][1]-ray[1][1]) - \
+        (points[0][1]-ray[0][1])*(ray[0][0]-ray[1][0])
+    v2 = (points[1][0]-ray[0][0])*(ray[0][1]-ray[1][1]) - \
+        (points[1][1]-ray[0][1])*(ray[0][0]-ray[1][0])
     return v1*v2 <= 0
 
-    
+
 if __name__=='__main__':
-    polygon = np.array([
+    poly = np.array([
         [400, 400,   1],
         [480, 400,   1],
         [480, 440,   1],
         [400, 480,   1]])
 
-    point = [481, 400, 1]
+    point = [440, 440, 1]
     
-    branches = examples.top_tree()
+    
+    branches = examples.side_tree()
     
     polys = []
     for branch in branches:
         polys += branch
         
     render(polys)
+    
     
     
     
