@@ -1,7 +1,6 @@
 import numpy as np
 import utilities as util
 
-
 def segment(matrix, lower_width, upper_width, height):
     """
     Generates a isosceles trapezoid of given dimensions and transform it

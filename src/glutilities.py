@@ -11,8 +11,8 @@ def draw_poly(points, delay=0, fill=True):
     glEnd()
     
     with open('{0}.ppm'.format(pygame.time.get_ticks()), 'w') as f: 
-        f.write('P5\n500 500\n255\n')
-        f.write(glReadPixels(0, 0, 500, 500, GL_RED, GL_UNSIGNED_BYTE))
+        f.write('P5\n800 800\n255\n')
+        f.write(glReadPixels(0, 0, 800, 800, GL_RED, GL_UNSIGNED_BYTE))
     
     """
     pygame.display.flip()
