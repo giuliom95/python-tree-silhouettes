@@ -2,7 +2,10 @@
 A python library to generate parametric silhouettes of trees.
 It widely uses [Numpy][1] library.
 
-![Animation of the algorithm](./images/generation.gif)
+**Animation of the working algorithm:**  
+![Animation of the algorithm](./images/generation.gif)  
+**Final result**
+![Final result](./images/full.png)
 
 ## Structure
 The modules are:
