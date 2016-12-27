@@ -4,11 +4,17 @@ import pygame
 def draw_poly(points, delay=0, fill=True):    
     
     draw_type = GL_POLYGON if fill else GL_LINE_LOOP
-
+    
     glBegin(draw_type)
     for point in points:
         glVertex(point)
     glEnd()
+    
+    with open('{0}.ppm'.format(pygame.time.get_ticks()), 'w') as f: 
+        f.write('P5\n500 500\n255\n')
+        f.write(glReadPixels(0, 0, 500, 500, GL_RED, GL_UNSIGNED_BYTE))
+    
+    """
     pygame.display.flip()
     
     glBegin(draw_type)
@@ -19,6 +25,7 @@ def draw_poly(points, delay=0, fill=True):
     pygame.display.flip()    
     
     pygame.time.delay(delay)
+    """
     
         
 def draw_ref(matrix, axes_length=.1):

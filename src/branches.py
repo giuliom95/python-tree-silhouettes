@@ -1,7 +1,6 @@
 import numpy as np
 import utilities as util
 
-import glutilities as glutil
 
 def segment(matrix, lower_width, upper_width, height):
     """
@@ -62,8 +61,6 @@ def branch(angle_fn, height_fn, delta_width):
             
             angles = angle_fn()
             mats = [np.dot(util.r_mat(alpha), new_mat) for alpha in angles]
-            
-            glutil.draw_poly(points, fill=True)
             
             pts = [points]
             for mat in mats:

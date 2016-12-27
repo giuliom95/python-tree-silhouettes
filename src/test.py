@@ -17,7 +17,7 @@ def main():
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     
-    branches = examples.side_tree()    
+    branches = examples.top_tree()    
     
     for branch in branches:
         for segment in branch:

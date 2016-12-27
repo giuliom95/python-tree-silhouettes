@@ -5,8 +5,8 @@ import branches as br
 
 def top_tree():
     br_angle_fn = util.random_between(
-        [ -np.pi/12, +np.pi/12, -np.pi/12 ], 
-        [  -np.pi/4,  +np.pi/4, +np.pi/12 ])
+        [ -np.pi/12, -np.pi/12, +np.pi/12 ], 
+        [ +np.pi/12,  -np.pi/4,  +np.pi/4 ])
     
     branch_fn = br.branch(
         angle_fn = br_angle_fn,
@@ -57,6 +57,6 @@ def snowflake():
     angles = util.sample_interval(0, 2*np.pi, 4)
     
     return \
-        [branch_fns[0](.05, util.t_mat([0,-.5])) for a in angles] + \
-        [branch_fns[1](.04, util.t_mat([0,-.5])) for a in angles]
+        [branch_fns[0](.05, util.r_mat(a)) for a in angles] + \
+        [branch_fns[1](.04, util.r_mat(a+np.pi/4)) for a in angles]
 
