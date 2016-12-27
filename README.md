@@ -4,8 +4,8 @@ It widely uses [Numpy][1] library.
 
 **Animation of the working algorithm:**  
 ![Animation of the algorithm](./images/generation.gif)  
-**Final result**
-![Final result](./images/full.png)
+**Final result**  
+![Final result](./images/full.png)  
 
 ## Structure
 The modules are:
